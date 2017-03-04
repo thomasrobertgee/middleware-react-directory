@@ -5,6 +5,11 @@ export default function({ dispatch }) {
       return next(action)
     }
 
-    console.log('We don`t have a promise', action)
+    // make sure the action's promise resolves
+    action.payload
+      .then(function(response) {
+        const newAction = { ...action, payload: response} // take existing action and copy over payload to create new action
+        dispatch(newAction)
+      })
   }
 }
